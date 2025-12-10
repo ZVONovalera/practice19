@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import TechnologyCard from './components/TechnologyCard';
-import Statistics from './components/Statistics';
+import Statistics from './Statistics';
 import QuickActions from './components/QuickActions';
 import FilterButtons from './components/FilterButtons';
 import SearchBar from './components/SearchBar';
