@@ -5,10 +5,12 @@ function QuickActions({
   markAllAsCompleted, 
   resetAllStatuses, 
   selectRandomTechnology,
-  technologies 
+  technologies,
+  clearLocalStorage  // Добавлен новый пропс
 }) {
   const notStartedCount = technologies.filter(t => t.status === 'not-started').length;
   const allCompleted = technologies.every(t => t.status === 'completed');
+  const hasSavedNotes = technologies.some(t => t.notes && t.notes.trim() !== '');
 
   return (
     <div className="quick-actions">
@@ -47,6 +49,22 @@ function QuickActions({
             )}
           </span>
         </button>
+
+        {/* Новая кнопка для очистки localStorage */}
+        <button 
+          className="action-btn clear-storage"
+          onClick={clearLocalStorage}
+          disabled={technologies.length === 0}
+          title={hasSavedNotes ? "Очистить все сохраненные данные (включая заметки)" : "Очистить сохраненные данные"}
+        >
+          <span className="action-icon">🗑️</span>
+          <span className="action-text">
+            Очистить хранилище
+            {hasSavedNotes && (
+              <span className="notes-badge" title="Есть сохраненные заметки">📝</span>
+            )}
+          </span>
+        </button>
       </div>
       
       <div className="actions-info">
@@ -62,6 +80,17 @@ function QuickActions({
             </>
           )}
         </p>
+        
+        {/* Информация о сохраненных данных */}
+        <div className="storage-info">
+          <span className="storage-icon">💾</span>
+          <span className="storage-text">
+            Данные сохраняются автоматически. 
+            {hasSavedNotes && (
+              <span className="notes-info"> Заметки: {technologies.filter(t => t.notes && t.notes.trim() !== '').length} шт.</span>
+            )}
+          </span>
+        </div>
       </div>
     </div>
   );

@@ -77,3 +77,130 @@ body {
   font-size: 1.1rem;
   grid-column: 1 / -1;
 }
+
+/* src/App.css - добавьте эти стили */
+
+.right-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.search-info {
+  margin: 20px 0;
+}
+
+.search-results-info {
+  background: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  padding: 15px 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #333;
+  font-size: 1rem;
+}
+
+.clear-search-btn {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clear-search-btn:hover {
+  background: #d32f2f;
+  transform: translateY(-1px);
+}
+
+.no-results {
+  text-align: center;
+  padding: 60px 40px;
+  background: white;
+  border-radius: 12px;
+  color: #666;
+  grid-column: 1 / -1;
+  border: 2px dashed #dee2e6;
+}
+
+.no-results-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.no-results h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.no-results p {
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+.reset-filters-btn {
+  background: #2196f3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-filters-btn:hover {
+  background: #1976d2;
+  transform: translateY(-2px);
+}
+
+.local-storage-info {
+  margin-top: 40px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.storage-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: 500;
+}
+
+.status-icon {
+  font-size: 1.2rem;
+}
+
+.storage-clear-btn {
+  margin-left: auto;
+  background: #ff9800;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.storage-clear-btn:hover {
+  background: #f57c00;
+  transform: translateY(-1px);
+}
+
+.storage-hint {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}

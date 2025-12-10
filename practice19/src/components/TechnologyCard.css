@@ -1,150 +1,168 @@
-/* src/components/TechnologyCard.css */
-.technology-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  border-left: 6px solid #ccc;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+/* src/components/TechnologyCard.css - добавьте эти стили */
+
+/* Секция заметок */
+.notes-section {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
 }
 
-.technology-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.technology-card.animating {
-  animation: pulse 0.3s ease;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
-}
-
-/* Стили по статусам */
-.technology-card.not-started {
-  border-left-color: #ff6b6b;
-  background: linear-gradient(to right, #fff5f5, white);
-}
-
-.technology-card.in-progress {
-  border-left-color: #4ecdc4;
-  background: linear-gradient(to right, #f0fff9, white);
-}
-
-.technology-card.completed {
-  border-left-color: #45b7d1;
-  background: linear-gradient(to right, #f0f9ff, white);
-}
-
-.technology-card.not-started:hover {
-  border-left-color: #ff4757;
-}
-
-.technology-card.in-progress:hover {
-  border-left-color: #2ed573;
-}
-
-.technology-card.completed:hover {
-  border-left-color: #3742fa;
-}
-
-/* Заголовок карточки */
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 12px;
-}
-
-.card-header h3 {
-  margin: 0;
-  color: #333;
-  font-size: 1.2rem;
-  flex: 1;
-}
-
-.status-badge {
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-left: 10px;
-}
-
-.not-started .status-badge {
-  background: #ff6b6b;
-  color: white;
-}
-
-.in-progress .status-badge {
-  background: #4ecdc4;
-  color: white;
-}
-
-.completed .status-badge {
-  background: #45b7d1;
-  color: white;
-}
-
-/* Описание */
-.description {
-  color: #555;
-  line-height: 1.5;
-  margin: 15px 0;
-  font-size: 0.95rem;
-}
-
-/* Футер карточки */
-.card-footer {
+.notes-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 1px solid #eee;
+  margin-bottom: 10px;
 }
 
-.tech-id {
+.notes-header h4 {
+  margin: 0;
+  color: #333;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.edit-notes-btn {
+  background: #2196f3;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.edit-notes-btn:hover {
+  background: #1976d2;
+  transform: translateY(-1px);
+}
+
+.notes-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.save-notes-btn, .cancel-notes-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.save-notes-btn {
+  background: #4caf50;
+  color: white;
+}
+
+.save-notes-btn:hover {
+  background: #388e3c;
+  transform: translateY(-1px);
+}
+
+.cancel-notes-btn {
+  background: #f44336;
+  color: white;
+}
+
+.cancel-notes-btn:hover {
+  background: #d32f2f;
+  transform: translateY(-1px);
+}
+
+.notes-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  min-height: 80px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.notes-textarea:focus {
+  outline: none;
+  border-color: #2196f3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.notes-preview {
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px dashed #ced4da;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 60px;
+}
+
+.notes-preview:hover {
+  border-color: #2196f3;
+  background: #f8f9fa;
+}
+
+.notes-content {
+  color: #333;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.notes-empty {
   color: #888;
+  font-style: italic;
 }
 
-.status-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  transition: background-color 0.3s ease;
+.notes-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #666;
 }
 
-.status-dot.not-started {
-  background: #ff6b6b;
+.notes-length {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 2px 8px;
+  border-radius: 12px;
 }
 
-.status-dot.in-progress {
-  background: #4ecdc4;
+.notes-saved {
+  color: #4caf50;
+  font-weight: 500;
 }
 
-.status-dot.completed {
-  background: #45b7d1;
+.notes-empty-hint {
+  color: #ff9800;
+  font-style: italic;
 }
 
-/* Подсказка */
-.click-hint {
+.clickable-title {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.clickable-title:hover {
+  color: #2196f3;
+}
+
+.status-hint {
   font-size: 0.8rem;
   color: #888;
-  text-align: center;
-  margin-top: 10px;
-  opacity: 0.7;
+  margin-top: 4px;
+  opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-.technology-card:hover .click-hint {
+.status-indicator:hover .status-hint {
   opacity: 1;
 }
