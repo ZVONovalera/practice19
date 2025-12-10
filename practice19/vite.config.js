@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/practice19/'  // ← имя твоего репозитория!
+  base: '/practice19/'  // имя твоего репо
 });
