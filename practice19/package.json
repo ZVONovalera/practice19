@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
-  },
+  "dev": "vite",
+  "build": "vite build",
+  "preview": "vite preview",
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d dist --repo https://github.com/ZVONovalera/practice19.git"
+},
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -18,7 +18,7 @@
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.0",
-    "gh-pages": "^6.3.0",
-    "vite": "^5.0.0"
+    "vite": "^5.0.0",
+    "gh-pages": "^6.1.1"
   }
 }
