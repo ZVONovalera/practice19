@@ -1,0 +1,69 @@
+/* === СТИЛИ ДЛЯ ТРЕКЕРА ТЕХНОЛОГИЙ === */
+
+.tech-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 15px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-left: 6px solid #ccc;
+  transition: transform 0.2s;
+}
+
+.tech-card:hover {
+  transform: translateY(-4px);
+}
+
+.tech-card.completed {
+  border-left-color: #4caf50;
+  background: #f0fdf4;
+}
+
+.tech-card.in-progress {
+  border-left-color: #ff9800;
+  background: #fff8e1;
+}
+
+.tech-card.not-started {
+  border-left-color: #f44336;
+  background: #ffebee;
+}
+
+.tech-card h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.tech-card p {
+  margin: 8px 0;
+  color: #555;
+  line-height: 1.5;
+}
+
+.status {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Прогресс-бар */
+.progress-container {
+  background: #e0e0e0;
+  border-radius: 10px;
+  height: 30px;
+  margin: 20px 0;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
+  width: 0%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+  color: white;
+  font-weight: bold;
+  transition: width 0.8s ease;
+}
