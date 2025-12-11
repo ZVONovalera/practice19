@@ -1,4 +1,4 @@
-// src/App.jsx
+
 import { useState } from 'react';
 import './App.css';
 import useTechnologies from './hooks/useTechnologies';
@@ -9,10 +9,10 @@ import FilterButtons from './components/FilterButtons';
 import SearchBar from './components/SearchBar';
 
 function App() {
-  // Используем кастомный хук для работы с технологиями
+  
   const {
     technologies,
-    isLoading, // ← ДОБАВЬ ЭТО!
+    isLoading, 
     updateStatus,
     updateNotes,
     markAllAsCompleted,
@@ -24,23 +24,23 @@ function App() {
     stats
   } = useTechnologies();
   
-  // Состояние для фильтра
+ 
   const [activeFilter, setActiveFilter] = useState('all');
   
-  // Состояние для поиска
+
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Защита от undefined - используем пустой массив если technologies undefined
+
   const safeTechnologies = Array.isArray(technologies) ? technologies : [];
 
-  // Фильтрация технологий по статусу
+
   const filteredByStatus = safeTechnologies.filter(tech => {
     if (!tech || !tech.status) return false;
     if (activeFilter === 'all') return true;
     return tech.status === activeFilter;
   });
 
-  // Поиск по технологиям с защитой от ошибок
+
   const filteredTechnologies = filteredByStatus.filter(tech => {
     if (!tech) return false;
     if (!searchQuery.trim()) return true;
@@ -57,7 +57,7 @@ function App() {
     );
   });
 
-  // Функция для обработки случайного выбора технологии
+
   const handleRandomTechnology = () => {
     try {
       const randomTech = selectRandomTechnology();
@@ -73,7 +73,7 @@ function App() {
     }
   };
 
-  // Функция для обработки очистки хранилища
+  
   const handleClearStorage = () => {
     if (window.confirm('Вы уверены? Все сохраненные данные будут удалены.')) {
       clearLocalStorage();
@@ -81,8 +81,8 @@ function App() {
     }
   };
 
-  // Показываем загрузку если данные еще грузятся
-  if (isLoading) { // ← Теперь isLoading определен
+  
+  if (isLoading) { 
     return (
       <div className="App loading">
         <div className="loader">
@@ -156,19 +156,19 @@ function App() {
     console.log('App: Изменение статуса для', tech.id);
     updateStatus(tech.id);
   }}
-  onNotesUpdate={(techId, notesText) => { // ← ВАЖНО: ДВА параметра!
+  onNotesUpdate={(techId, notesText) => { 
     console.log('App: Сохранение заметки', {
       techId: techId,
       notesText: notesText,
       expectedId: tech.id
     });
     
-    // Убедись что techId совпадает с tech.id
+ 
     if (techId === tech.id) {
       updateNotes(techId, notesText);
     } else {
       console.error('ID не совпадают!', techId, tech.id);
-      updateNotes(tech.id, notesText); // Все равно сохраняем
+      updateNotes(tech.id, notesText); 
     }
   }}
 />
@@ -195,7 +195,7 @@ function App() {
 
       {safeTechnologies.length === 0 && !isLoading && (
         <div className="no-data">
-          <div className="no-data-icon">📭</div>
+          <div className="no-data-icon"></div>
           <h3>Нет данных о технологиях</h3>
           <p>Попробуйте обновить страницу или очистить хранилище</p>
           <button 
@@ -209,7 +209,7 @@ function App() {
 
       <div className="local-storage-info">
         <div className="storage-status">
-          <span className="status-icon">💾</span>
+          <span className="status-icon"></span>
           <span>Данные сохраняются автоматически в localStorage</span>
           <div className="storage-stats">
             <span className="stat-item">Технологий: {safeTechnologies.length}</span>

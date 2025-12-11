@@ -1,9 +1,9 @@
-// src/components/TechnologyCard.jsx
+
 import { useState, useEffect } from 'react';
 import './TechnologyCard.css';
 
 function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
-  // Защита от undefined технологии
+
   if (!technology) {
     return (
       <div className="technology-card error">
@@ -17,7 +17,7 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
 
   const { id, title, description, status, notes } = technology;
   
-  // Защита от undefined значений
+
   const safeId = id || Date.now();
   const safeTitle = title || 'Без названия';
   const safeDescription = description || 'Описание отсутствует';
@@ -29,7 +29,7 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
   const [localNotes, setLocalNotes] = useState(safeNotes);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  // Синхронизация заметок
+
   useEffect(() => {
     if (!isEditingNotes) {
       setLocalNotes(safeNotes);
@@ -37,7 +37,7 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
     }
   }, [safeNotes, isEditingNotes]);
 
-  // Обработчик изменения статуса
+
   const handleStatusClick = () => {
     setIsAnimating(true);
     if (onStatusToggle) {
@@ -46,7 +46,7 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
     setTimeout(() => setIsAnimating(false), 300);
   };
 
-  // Сохранение заметок
+
   const handleNotesSave = () => {
     if (onNotesUpdate) {
       onNotesUpdate(safeId, localNotes);
@@ -55,21 +55,21 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
     setIsEditingNotes(false);
   };
 
-  // Отмена редактирования
+
   const handleNotesCancel = () => {
     setLocalNotes(safeNotes);
     setHasUnsavedChanges(false);
     setIsEditingNotes(false);
   };
 
-  // Изменение текста заметки
+
   const handleNotesChange = (e) => {
     const newNotes = e.target.value;
     setLocalNotes(newNotes);
     setHasUnsavedChanges(newNotes !== safeNotes);
   };
 
-  // Текст статуса
+
   const getStatusText = () => {
     switch(safeStatus) {
       case 'not-started': return 'Не начато';
@@ -79,7 +79,7 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
     }
   };
 
-  // Иконка статуса (простой текст вместо эмодзи)
+
   const getStatusIcon = () => {
     switch(safeStatus) {
       case 'not-started': return '○';
@@ -89,7 +89,7 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
     }
   };
 
-  // Проверка наличия заметок
+
   const hasNotes = safeNotes && safeNotes.trim() !== '';
 
   return (
@@ -131,7 +131,6 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
               {hasNotes ? 'Редактировать' : 'Добавить'}
             </button>
           ) : (
-            // Показываем кнопки только если есть изменения
             hasUnsavedChanges && (
               <div className="notes-actions">
                 <button 

@@ -1,8 +1,8 @@
-// src/components/Statistics.jsx
+
 import './Statistics.css';
 
 function Statistics({ technologies }) {
-  // Подсчет статистики
+
   const total = technologies.length;
   const completed = technologies.filter(t => t.status === 'completed').length;
   const inProgress = technologies.filter(t => t.status === 'in-progress').length;
@@ -10,7 +10,7 @@ function Statistics({ technologies }) {
   
   const progressPercentage = Math.round((completed / total) * 100);
   
-  // Находим самую частую категорию (статус)
+
   const statusCounts = { completed, 'in-progress': inProgress, 'not-started': notStarted };
   const mostCommonStatus = Object.keys(statusCounts).reduce((a, b) => 
     statusCounts[a] > statusCounts[b] ? a : b

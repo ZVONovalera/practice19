@@ -1,4 +1,4 @@
-// src/components/QuickActions.jsx
+
 import { useState } from 'react';
 import Modal from './Modal';
 import './QuickActions.css';
@@ -23,7 +23,7 @@ function QuickActions({
       const data = exportData();
       setExportedData(data);
       
-      // Создаем и скачиваем файл
+      
       const blob = new Blob([data], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -126,7 +126,7 @@ function QuickActions({
         </p>
         
         <div className="storage-info">
-          <span className="storage-icon">💾</span>
+          <span className="storage-icon"></span>
           <span className="storage-text">
             Данные сохраняются автоматически
             {hasSavedNotes && (

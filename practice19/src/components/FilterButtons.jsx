@@ -3,7 +3,7 @@ import './FilterButtons.css';
 
 function FilterButtons({ activeFilter, setActiveFilter }) {
   const filters = [
-    { id: 'all', label: 'Все', icon: '📋', count: null },
+    { id: 'all', label: 'Все', icon: '', count: null },
     { id: 'not-started', label: 'Не начато', icon: '', color: '#ff6b6b' },
     { id: 'in-progress', label: 'В процессе', icon: '', color: '#4ecdc4' },
     { id: 'completed', label: 'Завершено', icon: '', color: '#45b7d1' }
