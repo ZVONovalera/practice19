@@ -1,4 +1,8 @@
-// Внутри компонента QuickActions замени иконки:
+// src/components/QuickActions.jsx
+import { useState } from 'react';
+import Modal from './Modal';
+import './QuickActions.css';
+
 function QuickActions({ 
   markAllAsCompleted, 
   resetAllStatuses, 
@@ -72,7 +76,7 @@ function QuickActions({
           disabled={notStartedCount === 0}
           title={notStartedCount === 0 ? "Все технологии уже начаты" : "Выбрать случайную технологию для изучения"}
         >
-          <span className="action-icon">🎲</span>
+          <span className="action-icon">↻?</span>
           <span className="action-text">
             Случайный выбор
             {notStartedCount > 0 && (
@@ -179,3 +183,6 @@ function QuickActions({
     </div>
   );
 }
+
+
+export default QuickActions;

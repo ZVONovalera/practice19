@@ -28,7 +28,7 @@ function Statistics({ technologies }) {
   return (
     <div className="statistics">
       <div className="stats-header">
-        <h2>📊 Статистика прогресса</h2>
+        <h2>Статистика прогресса</h2>
         <div className="progress-percentage">
           <span className="percentage-value">{progressPercentage}%</span>
           <span className="percentage-label">завершено</span>
@@ -70,11 +70,11 @@ function Statistics({ technologies }) {
       
       <div className="additional-stats">
         <div className="additional-stat">
-          <span className="stat-icon">🎯</span>
+          <span className="stat-icon"></span>
           <span>Самый частый статус: <strong>{getStatusName(mostCommonStatus)}</strong></span>
         </div>
         <div className="additional-stat">
-          <span className="stat-icon">⏳</span>
+          <span className="stat-icon"></span>
           <span>Осталось изучить: <strong>{notStarted + inProgress}</strong> технологий</span>
         </div>
       </div>

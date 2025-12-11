@@ -34,17 +34,17 @@ function SearchBar({ searchQuery, setSearchQuery, resultsCount, totalCount }) {
             ✕
           </button>
         ) : (
-          <span className="search-icon">🔍</span>
+          <span className="search-icon"></span>
         )}
       </div>
       
       <div className="search-tips">
         <div className="tip">
-          <span className="tip-icon">💡</span>
+          <span className="tip-icon"></span>
           <span>Ищите по: названию, описанию или вашим заметкам</span>
         </div>
         <div className="tip">
-          <span className="tip-icon">⚡</span>
+          <span className="tip-icon"></span>
           <span>Поиск работает в реальном времени</span>
         </div>
       </div>
