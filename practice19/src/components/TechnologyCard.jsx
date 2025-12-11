@@ -79,7 +79,7 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
     }
   };
 
-  // Иконка статуса
+  // Иконка статуса (простой текст вместо эмодзи)
   const getStatusIcon = () => {
     switch(safeStatus) {
       case 'not-started': return '○';
@@ -102,10 +102,16 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
           <span className="tech-id">#{safeId}</span>
         </div>
         
-        <div className="status-indicator" onClick={handleStatusClick} title="Нажмите для смены статуса">
+        <div 
+          className="status-indicator" 
+          onClick={handleStatusClick} 
+          title="Нажмите для смены статуса"
+          role="button"
+          tabIndex={0}
+        >
           <span className="status-badge">
-            <span>{getStatusIcon()}</span>
-            <span>{getStatusText()}</span>
+            <span className="status-icon">{getStatusIcon()}</span>
+            <span className="status-text">{getStatusText()}</span>
           </span>
         </div>
       </div>
@@ -115,28 +121,33 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
       {/* Секция заметок */}
       <div className="notes-section">
         <div className="notes-header">
-          <h4>📝 Заметки</h4>
+          <h4>Заметки</h4>
           {!isEditingNotes ? (
-            <button className="edit-notes-btn" onClick={() => setIsEditingNotes(true)}>
+            <button 
+              className="edit-notes-btn" 
+              onClick={() => setIsEditingNotes(true)}
+              aria-label={hasNotes ? "Редактировать заметки" : "Добавить заметки"}
+            >
               {hasNotes ? 'Редактировать' : 'Добавить'}
             </button>
           ) : (
-            <div className="notes-actions">
-              <button 
-                className={`save-notes-btn ${hasUnsavedChanges ? 'has-changes' : ''}`}
-                onClick={handleNotesSave}
-                disabled={!hasUnsavedChanges}
-              >
-                {hasUnsavedChanges ? 'Сохранить' : 'Сохранено'}
-              </button>
-              <button 
-                className="cancel-notes-btn"
-                onClick={handleNotesCancel}
-                disabled={!hasUnsavedChanges}
-              >
-                {hasUnsavedChanges ? 'Отмена' : 'Закрыть'}
-              </button>
-            </div>
+            // Показываем кнопки только если есть изменения
+            hasUnsavedChanges && (
+              <div className="notes-actions">
+                <button 
+                  className="save-notes-btn"
+                  onClick={handleNotesSave}
+                >
+                  Сохранить
+                </button>
+                <button 
+                  className="cancel-notes-btn"
+                  onClick={handleNotesCancel}
+                >
+                  Отмена
+                </button>
+              </div>
+            )
           )}
         </div>
         
@@ -157,7 +168,12 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
             </div>
           </div>
         ) : (
-          <div className="notes-preview" onClick={() => setIsEditingNotes(true)}>
+          <div 
+            className="notes-preview" 
+            onClick={() => setIsEditingNotes(true)}
+            role="button"
+            tabIndex={0}
+          >
             {hasNotes ? (
               <div className="notes-content">
                 {safeNotes.length > 100 ? `${safeNotes.substring(0, 100)}...` : safeNotes}
@@ -171,21 +187,12 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
           </div>
         )}
         
-        {hasNotes && (
+        {hasNotes && !isEditingNotes && (
           <div className="notes-info">
             <span className="notes-length">{safeNotes.length} симв.</span>
-            <span className="notes-saved">✓ сохранено</span>
+            <span className="notes-saved">сохранено</span>
           </div>
         )}
-      </div>
-      
-      <div className="card-footer">
-        <div className="last-updated">
-          Статус: <span className={`status-text ${safeStatus}`}>{getStatusText()}</span>
-        </div>
-        <button className="action-btn" onClick={handleStatusClick} title="Сменить статус">
-          Сменить
-        </button>
       </div>
     </div>
   );

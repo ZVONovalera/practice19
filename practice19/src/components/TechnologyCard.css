@@ -350,59 +350,6 @@
   font-style: italic;
 }
 
-/* === ФУТЕР КАРТОЧКИ === */
-.card-footer {
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.last-updated {
-  font-size: 0.85rem;
-  color: #64748b;
-}
-
-.status-text {
-  font-weight: 600;
-}
-
-.status-text.not-started {
-  color: #dc2626;
-}
-
-.status-text.in-progress {
-  color: #d97706;
-}
-
-.status-text.completed {
-  color: #059669;
-}
-
-.card-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.action-btn {
-  padding: 6px 12px;
-  border: 1px solid #e2e8f0;
-  background: white;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: #475569;
-  font-weight: 500;
-}
-
-.action-btn:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
-  transform: translateY(-1px);
-}
 
 /* === ОШИБКА КАРТОЧКИ === */
 .technology-card.error {

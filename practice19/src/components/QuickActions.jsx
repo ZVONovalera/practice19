@@ -1,8 +1,4 @@
-// src/components/QuickActions.jsx
-import { useState } from 'react';
-import Modal from './Modal';
-import './QuickActions.css';
-
+// Внутри компонента QuickActions замени иконки:
 function QuickActions({ 
   markAllAsCompleted, 
   resetAllStatuses, 
@@ -34,7 +30,6 @@ function QuickActions({
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       
-      // Показываем модальное окно
       setShowExportModal(true);
     } catch (error) {
       alert('Ошибка при экспорте данных: ' + error.message);
@@ -50,7 +45,7 @@ function QuickActions({
 
   return (
     <div className="quick-actions">
-      <h3>⚡ Быстрые действия</h3>
+      <h3>Быстрые действия</h3>
       
       <div className="actions-grid">
         <button 
@@ -58,7 +53,7 @@ function QuickActions({
           onClick={markAllAsCompleted}
           title="Отметить все технологии как завершенные"
         >
-          <span className="action-icon">✅</span>
+          <span className="action-icon">✓</span>
           <span className="action-text">Завершить все</span>
         </button>
         
@@ -67,7 +62,7 @@ function QuickActions({
           onClick={resetAllStatuses}
           title="Сбросить статусы всех технологий"
         >
-          <span className="action-icon">🔄</span>
+          <span className="action-icon">↻</span>
           <span className="action-text">Сбросить все</span>
         </button>
         
@@ -92,21 +87,21 @@ function QuickActions({
           disabled={technologies.length === 0}
           title="Экспортировать все данные в JSON файл"
         >
-          <span className="action-icon">📤</span>
-          <span className="action-text">Экспорт данных</span>
+          <span className="action-icon">⇪</span>
+          <span className="action-text">Экспорт</span>
         </button>
 
         <button 
           className="action-btn clear-storage"
           onClick={handleClearStorage}
           disabled={technologies.length === 0}
-          title={hasSavedNotes ? "Очистить все сохраненные данные (включая заметки)" : "Очистить сохраненные данные"}
+          title={hasSavedNotes ? "Очистить все сохраненные данные" : "Очистить сохраненные данные"}
         >
-          <span className="action-icon">🗑️</span>
+          <span className="action-icon">×</span>
           <span className="action-text">
-            Очистить хранилище
+            Очистить
             {hasSavedNotes && (
-              <span className="notes-badge" title="Есть сохраненные заметки">📝</span>
+              <span className="notes-badge" title="Есть сохраненные заметки">!</span>
             )}
           </span>
         </button>
@@ -115,12 +110,12 @@ function QuickActions({
       <div className="actions-info">
         <p>
           {allCompleted ? (
-            <span className="all-completed">🎉 Все технологии изучены! Поздравляем!</span>
+            <span className="all-completed">Все технологии изучены</span>
           ) : (
             <>
               <span className="not-started-count">Доступно для изучения: <strong>{notStartedCount}</strong> технологий</span>
               {notStartedCount === 0 && (
-                <span className="warning-text"> — начните одну из технологий "В процессе"</span>
+                <span className="warning-text"> — начните одну из технологий в процессе</span>
               )}
             </>
           )}
@@ -129,9 +124,9 @@ function QuickActions({
         <div className="storage-info">
           <span className="storage-icon">💾</span>
           <span className="storage-text">
-            Данные сохраняются автоматически. 
+            Данные сохраняются автоматически
             {hasSavedNotes && (
-              <span className="notes-info"> Заметок: {technologies.filter(t => t.notes && t.notes.trim() !== '').length} шт.</span>
+              <span className="notes-info"> • Заметок: {technologies.filter(t => t.notes && t.notes.trim() !== '').length}</span>
             )}
           </span>
         </div>
@@ -141,20 +136,20 @@ function QuickActions({
       <Modal
         isOpen={showExportModal}
         onClose={() => setShowExportModal(false)}
-        title="✅ Экспорт данных завершен"
+        title="Экспорт данных завершен"
       >
         <div className="export-modal-content">
-          <p>Данные успешно экспортированы в JSON файл!</p>
+          <p>Данные успешно экспортированы в JSON файл.</p>
           <p>Файл автоматически загружен в ваше устройство.</p>
           
           <div className="export-stats">
             <h4>Статистика экспорта:</h4>
             <ul>
-              <li>📊 Всего технологий: <strong>{technologies.length}</strong></li>
-              <li>✅ Завершено: <strong>{technologies.filter(t => t.status === 'completed').length}</strong></li>
-              <li>🔄 В процессе: <strong>{technologies.filter(t => t.status === 'in-progress').length}</strong></li>
-              <li>⭕ Не начато: <strong>{notStartedCount}</strong></li>
-              <li>📝 С заметками: <strong>{technologies.filter(t => t.notes && t.notes.trim() !== '').length}</strong></li>
+              <li>Всего технологий: <strong>{technologies.length}</strong></li>
+              <li>Завершено: <strong>{technologies.filter(t => t.status === 'completed').length}</strong></li>
+              <li>В процессе: <strong>{technologies.filter(t => t.status === 'in-progress').length}</strong></li>
+              <li>Не начато: <strong>{notStartedCount}</strong></li>
+              <li>С заметками: <strong>{technologies.filter(t => t.notes && t.notes.trim() !== '').length}</strong></li>
             </ul>
           </div>
           
@@ -166,7 +161,7 @@ function QuickActions({
                 alert('Данные скопированы в буфер обмена!');
               }}
             >
-              📋 Копировать JSON
+              Копировать JSON
             </button>
             <button 
               className="modal-btn close-btn"
@@ -184,5 +179,3 @@ function QuickActions({
     </div>
   );
 }
-
-export default QuickActions;

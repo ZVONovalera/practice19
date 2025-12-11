@@ -13,10 +13,11 @@ function Modal({ isOpen, onClose, title, children }) {
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content">
-        <div className="modal-header">
-          <h3 className="modal-title">{title}</h3>
-          <button className="modal-close" onClick={onClose}>✕</button>
-        </div>
+        // В компоненте Modal замени:
+<div className="modal-header">
+  <h3 className="modal-title">{title}</h3>
+  <button className="modal-close" onClick={onClose} aria-label="Закрыть">×</button>
+</div>
         <div className="modal-body">
           {children}
         </div>
