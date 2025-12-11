@@ -1,168 +1,415 @@
-/* src/components/TechnologyCard.css - добавьте эти стили */
+/* === КАРТОЧКА ТЕХНОЛОГИИ === */
+.technology-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
-/* Секция заметок */
+.technology-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+}
+
+.technology-card.animating {
+  animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* === СТАТУС КАРТОЧКИ (цветная полоска слева) === */
+.technology-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  border-radius: 12px 0 0 12px;
+}
+
+.technology-card.not-started::before {
+  background: #ef4444;
+}
+
+.technology-card.in-progress::before {
+  background: #f59e0b;
+}
+
+.technology-card.completed::before {
+  background: #10b981;
+}
+
+/* === ЗАГОЛОВОК КАРТОЧКИ === */
+.card-header {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.title-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.title-section h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.3;
+  flex: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.title-section h3:hover {
+  color: #3b82f6;
+}
+
+.tech-id {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  background: #f8fafc;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  margin-left: 10px;
+}
+
+/* === ИНДИКАТОР СТАТУСА === */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.status-indicator:hover {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.technology-card.not-started .status-indicator {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+.technology-card.in-progress .status-indicator {
+  color: #d97706;
+  background: #fffbeb;
+}
+
+.technology-card.completed .status-indicator {
+  color: #059669;
+  background: #f0fdf4;
+}
+
+.status-hint {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.status-indicator:hover .status-hint {
+  opacity: 1;
+}
+
+/* === ОПИСАНИЕ === */
+.description {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+/* === СЕКЦИЯ ЗАМЕТОК === */
 .notes-section {
-  margin: 20px 0;
-  padding: 15px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #f1f5f9;
 }
 
 .notes-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .notes-header h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #475569;
   margin: 0;
-  color: #333;
-  font-size: 1rem;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
 .edit-notes-btn {
-  background: #2196f3;
-  color: white;
-  border: none;
+  background: transparent;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s;
 }
 
 .edit-notes-btn:hover {
-  background: #1976d2;
-  transform: translateY(-1px);
-}
-
-.notes-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.save-notes-btn, .cancel-notes-btn {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.save-notes-btn {
-  background: #4caf50;
+  background: #3b82f6;
   color: white;
 }
 
-.save-notes-btn:hover {
-  background: #388e3c;
-  transform: translateY(-1px);
-}
-
-.cancel-notes-btn {
-  background: #f44336;
-  color: white;
-}
-
-.cancel-notes-btn:hover {
-  background: #d32f2f;
-  transform: translateY(-1px);
+/* === РЕДАКТОР ЗАМЕТОК === */
+.notes-editor {
+  margin-bottom: 12px;
 }
 
 .notes-textarea {
   width: 100%;
   padding: 12px;
-  border: 2px solid #e0e0e0;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   resize: vertical;
   min-height: 80px;
-  transition: all 0.3s ease;
-  background: white;
+  transition: border-color 0.2s;
+  background: #f8fafc;
 }
 
 .notes-textarea:focus {
   outline: none;
-  border-color: #2196f3;
-  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+  border-color: #3b82f6;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
+.notes-counter {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  text-align: right;
+  margin-top: 4px;
+}
+
+.unsaved-indicator {
+  color: #f59e0b;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+/* === КНОПКИ ДЕЙСТВИЙ ЗАМЕТОК === */
+.notes-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.save-notes-btn,
+.cancel-notes-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.save-notes-btn {
+  background: #10b981;
+  color: white;
+}
+
+.save-notes-btn:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.save-notes-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #a7f3d0;
+}
+
+.cancel-notes-btn {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.cancel-notes-btn:hover:not(:disabled) {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.cancel-notes-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.save-notes-btn.has-changes {
+  background: #3b82f6;
+}
+
+.save-notes-btn.has-changes:hover {
+  background: #2563eb;
+}
+
+/* === ПРЕВЬЮ ЗАМЕТОК === */
 .notes-preview {
   padding: 12px;
-  background: white;
+  background: #f8fafc;
   border-radius: 8px;
-  border: 1px dashed #ced4da;
+  border: 1px solid #e2e8f0;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s;
   min-height: 60px;
+  display: flex;
+  align-items: center;
 }
 
 .notes-preview:hover {
-  border-color: #2196f3;
-  background: #f8f9fa;
+  border-color: #cbd5e1;
+  background: #f1f5f9;
 }
 
 .notes-content {
-  color: #333;
+  color: #475569;
   line-height: 1.5;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .notes-empty {
-  color: #888;
+  color: #94a3b8;
   font-style: italic;
+  font-size: 0.9rem;
 }
 
+.read-more {
+  color: #3b82f6;
+  font-style: italic;
+  font-size: 0.85rem;
+  margin-left: 4px;
+}
+
+/* === ИНФОРМАЦИЯ О ЗАМЕТКАХ === */
 .notes-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
-  font-size: 0.85rem;
-  color: #666;
+  font-size: 0.8rem;
+  color: #94a3b8;
 }
 
 .notes-length {
-  background: #e3f2fd;
-  color: #1976d2;
+  background: #e0f2fe;
+  color: #0369a1;
   padding: 2px 8px;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .notes-saved {
-  color: #4caf50;
+  color: #10b981;
   font-weight: 500;
 }
 
 .notes-empty-hint {
-  color: #ff9800;
   font-style: italic;
 }
 
-.clickable-title {
+/* === ФУТЕР КАРТОЧКИ === */
+.card-footer {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.last-updated {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.status-text {
+  font-weight: 600;
+}
+
+.status-text.not-started {
+  color: #dc2626;
+}
+
+.status-text.in-progress {
+  color: #d97706;
+}
+
+.status-text.completed {
+  color: #059669;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  border-radius: 6px;
+  font-size: 0.85rem;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.2s;
+  color: #475569;
+  font-weight: 500;
 }
 
-.clickable-title:hover {
-  color: #2196f3;
+.action-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
 }
 
-.status-hint {
-  font-size: 0.8rem;
-  color: #888;
-  margin-top: 4px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+/* === ОШИБКА КАРТОЧКИ === */
+.technology-card.error {
+  border-color: #fca5a5;
+  background: #fef2f2;
 }
 
-.status-indicator:hover .status-hint {
-  opacity: 1;
+.technology-card.error h3 {
+  color: #dc2626;
 }

@@ -29,7 +29,7 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
   const [localNotes, setLocalNotes] = useState(safeNotes);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  // Синхронизируем localNotes при изменении внешних notes
+  // Синхронизация заметок
   useEffect(() => {
     if (!isEditingNotes) {
       setLocalNotes(safeNotes);
@@ -37,7 +37,7 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
     }
   }, [safeNotes, isEditingNotes]);
 
-  // Обработчик клика по карточке (изменение статуса)
+  // Обработчик изменения статуса
   const handleStatusClick = () => {
     setIsAnimating(true);
     if (onStatusToggle) {
@@ -46,41 +46,30 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
     setTimeout(() => setIsAnimating(false), 300);
   };
 
-  // Обработчик сохранения заметок - ИСПРАВЛЕН!
-  const handleNotesSave = (e) => {
-  // Предотвращаем поведение по умолчанию (если это форма)
-  if (e && e.preventDefault) {
-    e.preventDefault();
-  }
-  
-  // Берем ТЕКСТ, а не event
-  const notesToSave = localNotes;
-  console.log('Saving notes:', notesToSave, 'Type:', typeof notesToSave);
-  
-  if (onNotesUpdate) {
-    // Явно передаем текст
-    onNotesUpdate(safeId, notesToSave);
-  }
-  
-  setHasUnsavedChanges(false);
-  setIsEditingNotes(false);
-};
+  // Сохранение заметок
+  const handleNotesSave = () => {
+    if (onNotesUpdate) {
+      onNotesUpdate(safeId, localNotes);
+    }
+    setHasUnsavedChanges(false);
+    setIsEditingNotes(false);
+  };
 
-  // Обработчик отмены редактирования заметок
+  // Отмена редактирования
   const handleNotesCancel = () => {
     setLocalNotes(safeNotes);
     setHasUnsavedChanges(false);
     setIsEditingNotes(false);
   };
 
-  // Обработчик изменения текста заметки
+  // Изменение текста заметки
   const handleNotesChange = (e) => {
-    const newNotes = e.target.value; // ← Берем значение из textarea
+    const newNotes = e.target.value;
     setLocalNotes(newNotes);
     setHasUnsavedChanges(newNotes !== safeNotes);
   };
 
-  // Получение текста статуса на русском
+  // Текст статуса
   const getStatusText = () => {
     switch(safeStatus) {
       case 'not-started': return 'Не начато';
@@ -90,44 +79,34 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
     }
   };
 
-  // Получение иконки статуса
+  // Иконка статуса
   const getStatusIcon = () => {
     switch(safeStatus) {
-      case 'not-started': return '⭕';
-      case 'in-progress': return '🔄';
-      case 'completed': return '✅';
-      default: return '❓';
+      case 'not-started': return '○';
+      case 'in-progress': return '↻';
+      case 'completed': return '✓';
+      default: return '?';
     }
   };
 
-  // Проверяем есть ли заметки
+  // Проверка наличия заметок
   const hasNotes = safeNotes && safeNotes.trim() !== '';
 
   return (
-    <div 
-      className={`technology-card ${safeStatus} ${isAnimating ? 'animating' : ''}`}
-    >
+    <div className={`technology-card ${safeStatus} ${isAnimating ? 'animating' : ''}`}>
       <div className="card-header">
         <div className="title-section">
-          <h3 
-            onClick={handleStatusClick} 
-            className="clickable-title"
-            title="Нажмите для изменения статуса"
-          >
+          <h3 onClick={handleStatusClick} title="Нажмите для изменения статуса">
             {safeTitle}
           </h3>
-          <span className="tech-id">ID: {safeId}</span>
+          <span className="tech-id">#{safeId}</span>
         </div>
         
-        <div 
-          className="status-indicator clickable"
-          onClick={handleStatusClick}
-          title={`Нажмите для смены статуса (${getStatusText()})`}
-        >
+        <div className="status-indicator" onClick={handleStatusClick} title="Нажмите для смены статуса">
           <span className="status-badge">
-            {getStatusIcon()} {getStatusText()}
+            <span>{getStatusIcon()}</span>
+            <span>{getStatusText()}</span>
           </span>
-          <div className="status-hint">👆 Клик для смены</div>
         </div>
       </div>
       
@@ -136,32 +115,26 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
       {/* Секция заметок */}
       <div className="notes-section">
         <div className="notes-header">
-          <h4>📝 Мои заметки:</h4>
+          <h4>📝 Заметки</h4>
           {!isEditingNotes ? (
-            <button 
-              className="edit-notes-btn"
-              onClick={() => setIsEditingNotes(true)}
-              aria-label={hasNotes ? "Редактировать заметки" : "Добавить заметки"}
-            >
-              {hasNotes ? 'Редактировать' : 'Добавить заметку'}
+            <button className="edit-notes-btn" onClick={() => setIsEditingNotes(true)}>
+              {hasNotes ? 'Редактировать' : 'Добавить'}
             </button>
           ) : (
             <div className="notes-actions">
               <button 
-  className={`save-notes-btn ${hasUnsavedChanges ? 'has-changes' : ''}`}
-  onClick={() => handleNotesSave()} // ← Прямой вызов без параметров
-  disabled={!hasUnsavedChanges}
-  title={hasUnsavedChanges ? "Сохранить изменения" : "Нет изменений для сохранения"}
->
-  {hasUnsavedChanges ? '💾 Сохранить' : '✓ Сохранено'}
-</button>
+                className={`save-notes-btn ${hasUnsavedChanges ? 'has-changes' : ''}`}
+                onClick={handleNotesSave}
+                disabled={!hasUnsavedChanges}
+              >
+                {hasUnsavedChanges ? 'Сохранить' : 'Сохранено'}
+              </button>
               <button 
                 className="cancel-notes-btn"
                 onClick={handleNotesCancel}
                 disabled={!hasUnsavedChanges}
-                title={hasUnsavedChanges ? "Отменить изменения" : "Нет изменений для отмены"}
               >
-                {hasUnsavedChanges ? '✕ Отмена' : '✕ Закрыть'}
+                {hasUnsavedChanges ? 'Отмена' : 'Закрыть'}
               </button>
             </div>
           )}
@@ -172,61 +145,47 @@ function TechnologyCard({ technology, onStatusToggle, onNotesUpdate }) {
             <textarea
               className="notes-textarea"
               value={localNotes}
-              onChange={handleNotesChange} // ← Используем правильный обработчик
-              placeholder="Записывайте сюда важные моменты, ссылки, идеи..."
-              rows="4"
+              onChange={handleNotesChange}
+              placeholder="Записывайте важные моменты, ссылки, идеи..."
+              rows="3"
               autoFocus
-              maxLength="1000"
+              maxLength="500"
             />
             <div className="notes-counter">
-              {localNotes.length}/1000 символов
-              {hasUnsavedChanges && <span className="unsaved-indicator"> *не сохранено</span>}
+              {localNotes.length}/500 символов
+              {hasUnsavedChanges && <span className="unsaved-indicator"> • не сохранено</span>}
             </div>
           </div>
         ) : (
-          <div 
-            className={`notes-preview clickable ${hasNotes ? 'has-notes' : 'empty'}`}
-            onClick={() => setIsEditingNotes(true)}
-            title={hasNotes ? "Нажмите для редактирования" : "Нажмите для добавления заметки"}
-          >
+          <div className="notes-preview" onClick={() => setIsEditingNotes(true)}>
             {hasNotes ? (
               <div className="notes-content">
-                {safeNotes.length > 150 ? `${safeNotes.substring(0, 150)}...` : safeNotes}
-                {safeNotes.length > 150 && <span className="read-more"> [читать далее]</span>}
+                {safeNotes.length > 100 ? `${safeNotes.substring(0, 100)}...` : safeNotes}
+                {safeNotes.length > 100 && <span className="read-more">ещё</span>}
               </div>
             ) : (
               <div className="notes-empty">
-                <em>Нажмите, чтобы добавить заметку...</em>
+                Нажмите, чтобы добавить заметку...
               </div>
             )}
           </div>
         )}
         
-        <div className="notes-info">
-          {hasNotes ? (
-            <>
-              <span className="notes-length">{safeNotes.length} символов</span>
-              <span className="notes-saved">💾 Автосохранено</span>
-            </>
-          ) : (
-            <span className="notes-empty-hint">Заметки будут сохранены в localStorage</span>
-          )}
-        </div>
+        {hasNotes && (
+          <div className="notes-info">
+            <span className="notes-length">{safeNotes.length} симв.</span>
+            <span className="notes-saved">✓ сохранено</span>
+          </div>
+        )}
       </div>
       
       <div className="card-footer">
         <div className="last-updated">
           Статус: <span className={`status-text ${safeStatus}`}>{getStatusText()}</span>
         </div>
-        <div className="card-actions">
-          <button 
-            className="action-btn quick-status"
-            onClick={handleStatusClick}
-            aria-label="Сменить статус технологии"
-          >
-            🔄 Сменить статус
-          </button>
-        </div>
+        <button className="action-btn" onClick={handleStatusClick} title="Сменить статус">
+          Сменить
+        </button>
       </div>
     </div>
   );

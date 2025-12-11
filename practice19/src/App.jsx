@@ -145,7 +145,7 @@ function App() {
 
       <div className="technologies-grid">
         {filteredTechnologies.map(tech => {
-          // Дополнительная защита для каждого элемента
+          
           if (!tech || !tech.id) return null;
           
           return (
