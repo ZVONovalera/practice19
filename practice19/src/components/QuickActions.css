@@ -117,3 +117,105 @@
   color: #ff9800;
   font-style: italic;
 }
+/* Добавь в существующий QuickActions.css */
+
+/* Стили для кнопки экспорта */
+.action-btn.export-data {
+  background: linear-gradient(135deg, #9c27b0, #673ab7);
+  color: white;
+}
+
+/* Стили для модального окна экспорта */
+.export-modal-content {
+  padding: 10px 0;
+}
+
+.export-stats {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 15px 0;
+  border-left: 4px solid #673ab7;
+}
+
+.export-stats h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.export-stats ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.export-stats li {
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.modal-btn.copy-btn {
+  background: #2196f3;
+  color: white;
+}
+
+.modal-btn.copy-btn:hover {
+  background: #1976d2;
+}
+
+.modal-btn.close-btn {
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.modal-btn.close-btn:hover {
+  background: #e0e0e0;
+}
+
+.export-hint {
+  color: #666;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+/* Обновляем сетку кнопок */
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+@media (min-width: 768px) {
+  .actions-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .actions-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

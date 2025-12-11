@@ -1,4 +1,6 @@
 // src/components/QuickActions.jsx
+import { useState } from 'react';
+import Modal from './Modal';
 import './QuickActions.css';
 
 function QuickActions({ 
@@ -6,11 +8,45 @@ function QuickActions({
   resetAllStatuses, 
   selectRandomTechnology,
   technologies,
-  clearLocalStorage  // Добавлен новый пропс
+  clearLocalStorage,
+  exportData
 }) {
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [exportedData, setExportedData] = useState('');
+  
   const notStartedCount = technologies.filter(t => t.status === 'not-started').length;
   const allCompleted = technologies.every(t => t.status === 'completed');
   const hasSavedNotes = technologies.some(t => t.notes && t.notes.trim() !== '');
+
+  const handleExport = () => {
+    try {
+      const data = exportData();
+      setExportedData(data);
+      
+      // Создаем и скачиваем файл
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `tech-tracker-export-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      // Показываем модальное окно
+      setShowExportModal(true);
+    } catch (error) {
+      alert('Ошибка при экспорте данных: ' + error.message);
+    }
+  };
+
+  const handleClearStorage = () => {
+    if (window.confirm('Вы уверены? Все сохраненные данные будут удалены.')) {
+      clearLocalStorage();
+      alert('Данные очищены!');
+    }
+  };
 
   return (
     <div className="quick-actions">
@@ -50,10 +86,19 @@ function QuickActions({
           </span>
         </button>
 
-        {/* Новая кнопка для очистки localStorage */}
+        <button 
+          className="action-btn export-data"
+          onClick={handleExport}
+          disabled={technologies.length === 0}
+          title="Экспортировать все данные в JSON файл"
+        >
+          <span className="action-icon">📤</span>
+          <span className="action-text">Экспорт данных</span>
+        </button>
+
         <button 
           className="action-btn clear-storage"
-          onClick={clearLocalStorage}
+          onClick={handleClearStorage}
           disabled={technologies.length === 0}
           title={hasSavedNotes ? "Очистить все сохраненные данные (включая заметки)" : "Очистить сохраненные данные"}
         >
@@ -81,17 +126,61 @@ function QuickActions({
           )}
         </p>
         
-        {/* Информация о сохраненных данных */}
         <div className="storage-info">
           <span className="storage-icon">💾</span>
           <span className="storage-text">
             Данные сохраняются автоматически. 
             {hasSavedNotes && (
-              <span className="notes-info"> Заметки: {technologies.filter(t => t.notes && t.notes.trim() !== '').length} шт.</span>
+              <span className="notes-info"> Заметок: {technologies.filter(t => t.notes && t.notes.trim() !== '').length} шт.</span>
             )}
           </span>
         </div>
       </div>
+
+      {/* Модальное окно экспорта */}
+      <Modal
+        isOpen={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        title="✅ Экспорт данных завершен"
+      >
+        <div className="export-modal-content">
+          <p>Данные успешно экспортированы в JSON файл!</p>
+          <p>Файл автоматически загружен в ваше устройство.</p>
+          
+          <div className="export-stats">
+            <h4>Статистика экспорта:</h4>
+            <ul>
+              <li>📊 Всего технологий: <strong>{technologies.length}</strong></li>
+              <li>✅ Завершено: <strong>{technologies.filter(t => t.status === 'completed').length}</strong></li>
+              <li>🔄 В процессе: <strong>{technologies.filter(t => t.status === 'in-progress').length}</strong></li>
+              <li>⭕ Не начато: <strong>{notStartedCount}</strong></li>
+              <li>📝 С заметками: <strong>{technologies.filter(t => t.notes && t.notes.trim() !== '').length}</strong></li>
+            </ul>
+          </div>
+          
+          <div className="modal-actions">
+            <button 
+              className="modal-btn copy-btn"
+              onClick={() => {
+                navigator.clipboard.writeText(exportedData);
+                alert('Данные скопированы в буфер обмена!');
+              }}
+            >
+              📋 Копировать JSON
+            </button>
+            <button 
+              className="modal-btn close-btn"
+              onClick={() => setShowExportModal(false)}
+            >
+              Закрыть
+            </button>
+          </div>
+          
+          <div className="export-hint">
+            <small>Файл содержит все данные из трекера, включая статусы и заметки.</small>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
