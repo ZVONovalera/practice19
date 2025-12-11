@@ -55,33 +55,48 @@ const initialTechnologies = [
 function useTechnologies() {
   const [technologies, setTechnologies] = useState([]);
 
-  // Загрузка из localStorage при первом рендере
+  // 1. Загружаем данные при монтировании
   useEffect(() => {
-    const savedData = localStorage.getItem('techTrackerData');
-    if (savedData) {
-      try {
-        const parsedData = JSON.parse(savedData);
-        console.log('✅ Данные загружены из localStorage');
-        setTechnologies(parsedData);
-      } catch (error) {
-        console.error('❌ Ошибка при загрузке из localStorage:', error);
+    console.log('🔍 Загрузка данных из localStorage...');
+    
+    try {
+      const savedData = localStorage.getItem('techTrackerData');
+      
+      if (savedData) {
+        const parsed = JSON.parse(savedData);
+        console.log('✅ Данные загружены:', parsed.length, 'технологий');
+        
+        // Нормализуем данные (защита от undefined)
+        const normalized = parsed.map(item => ({
+          id: item.id || Date.now(),
+          title: item.title || 'Без названия',
+          description: item.description || '',
+          status: item.status || 'not-started',
+          notes: String(item.notes || ''), // ГАРАНТИРУЕМ что это строка
+          category: item.category || 'uncategorized'
+        }));
+        
+        setTechnologies(normalized);
+      } else {
+        console.log('📝 Нет сохраненных данных, использую начальные');
         setTechnologies(initialTechnologies);
       }
-    } else {
-      console.log('📝 Локальное хранилище пусто, используются начальные данные');
+    } catch (error) {
+      console.error('❌ Ошибка загрузки:', error);
+      console.log('🔄 Использую начальные данные');
       setTechnologies(initialTechnologies);
     }
   }, []);
 
-  // Автосохранение в localStorage при изменении технологий
+  // 2. Сохраняем при изменении
   useEffect(() => {
     if (technologies.length > 0) {
+      console.log('💾 Сохранение данных...');
       localStorage.setItem('techTrackerData', JSON.stringify(technologies));
-      console.log('💾 Данные сохранены в localStorage');
     }
   }, [technologies]);
 
-  // Функция для обновления статуса технологии
+  // 3. Простые функции
   const updateStatus = (techId) => {
     setTechnologies(prev => prev.map(tech => {
       if (tech.id === techId) {
@@ -94,67 +109,62 @@ function useTechnologies() {
     }));
   };
 
-  // Функция для обновления заметок
   const updateNotes = (techId, newNotes) => {
-    setTechnologies(prev => 
-      prev.map(tech => 
-        tech.id === techId ? { ...tech, notes: newNotes } : tech
-      )
-    );
+    setTechnologies(prev => prev.map(tech => 
+      tech.id === techId ? { ...tech, notes: String(newNotes || '') } : tech
+    ));
   };
 
-  // Функция для отметки всех как выполненных
   const markAllAsCompleted = () => {
-    setTechnologies(prev => 
-      prev.map(tech => ({ ...tech, status: 'completed' }))
-    );
+    setTechnologies(prev => prev.map(tech => ({ ...tech, status: 'completed' })));
   };
 
-  // Функция для сброса всех статусов
   const resetAllStatuses = () => {
-    setTechnologies(prev => 
-      prev.map(tech => ({ ...tech, status: 'not-started' }))
-    );
+    setTechnologies(prev => prev.map(tech => ({ ...tech, status: 'not-started' })));
   };
 
-  // Функция для экспорта данных
   const exportData = () => {
     const data = {
       exportedAt: new Date().toISOString(),
-      version: '1.0',
-      totalTechnologies: technologies.length,
       technologies: technologies
     };
     return JSON.stringify(data, null, 2);
   };
 
-  // Функция для расчета общего прогресса
-  const calculateProgress = () => {
-    if (technologies.length === 0) return 0;
-    const completed = technologies.filter(tech => tech.status === 'completed').length;
-    return Math.round((completed / technologies.length) * 100);
-  };
-
-  // Функция для случайного выбора следующей технологии
   const selectRandomTechnology = () => {
-    const notStartedTech = technologies.filter(tech => tech.status === 'not-started');
-    if (notStartedTech.length === 0) return null;
-    
-    const randomIndex = Math.floor(Math.random() * notStartedTech.length);
-    const randomTech = notStartedTech[randomIndex];
-    updateStatus(randomTech.id);
-    return randomTech;
+    const notStarted = technologies.filter(t => t.status === 'not-started');
+    if (notStarted.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * notStarted.length);
+    return notStarted[randomIndex];
   };
 
-  // Функция для очистки localStorage
   const clearLocalStorage = () => {
     localStorage.removeItem('techTrackerData');
     setTechnologies(initialTechnologies);
   };
 
+  // 4. Рассчитываем статистику БЕЗОПАСНО
+  const progress = technologies.length > 0 
+    ? Math.round((technologies.filter(t => t.status === 'completed').length / technologies.length) * 100)
+    : 0;
+
+  const stats = {
+    total: technologies.length,
+    completed: technologies.filter(t => t.status === 'completed').length,
+    inProgress: technologies.filter(t => t.status === 'in-progress').length,
+    notStarted: technologies.filter(t => t.status === 'not-started').length,
+    notesCount: technologies.filter(t => {
+      try {
+        const notes = t.notes;
+        return notes && typeof notes === 'string' && notes.trim().length > 0;
+      } catch {
+        return false;
+      }
+    }).length
+  };
+
   return {
     technologies,
-    setTechnologies,
     updateStatus,
     updateNotes,
     markAllAsCompleted,
@@ -162,14 +172,8 @@ function useTechnologies() {
     exportData,
     selectRandomTechnology,
     clearLocalStorage,
-    progress: calculateProgress(),
-    stats: {
-      total: technologies.length,
-      completed: technologies.filter(t => t.status === 'completed').length,
-      inProgress: technologies.filter(t => t.status === 'in-progress').length,
-      notStarted: technologies.filter(t => t.status === 'not-started').length,
-      notesCount: technologies.filter(t => t.notes && t.notes.trim() !== '').length
-    }
+    progress,
+    stats
   };
 }
 
